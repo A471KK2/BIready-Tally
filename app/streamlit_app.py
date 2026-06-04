@@ -2814,9 +2814,7 @@ def render_sidebar():
 
         st.divider()
 
-        selected_page = st.radio(
-            "Navigation", ["Dashboard", "Analytics", "Insights", "Export"]
-        )
+        selected_page = st.radio("Navigation", ["Dashboard", "Insights", "Export"])
 
         st.divider()
 
@@ -2971,30 +2969,48 @@ def render_charts(filtered_df):
 
     with chart_col2:
         if "payment_mode" in filtered_df.columns:
+            filtered_df["payment_mode"] = (
+                filtered_df["payment_mode"].astype(str).str.strip().str.title()
+            )
             payment_mode_df = filtered_df["payment_mode"].value_counts().reset_index()
-            payment_mode_df.columns = ["payment_mode", "count"]
+            payment_mode_df.columns = ["Payment Mode", "Count"]
+
+            st.markdown(
+                """
+                    <div style="
+                        font-size:1.15rem;
+                        font-weight:700;
+                        color:#111827;
+                        margin-bottom:10px;
+                    ">
+                        Payment Mode Distribution
+                    </div>
+                """,
+                unsafe_allow_html=True,
+            )
             fig = px.pie(
                 payment_mode_df,
                 names="payment_mode",
                 values="count",
                 hole=0.50,
-                # title="Payment Mode Distribution",
                 color_discrete_sequence=px.colors.qualitative.Set2,
             )
 
+            fig.for_each_trace(lambda t: t.update(legendgrouptitle_text=""))
+
             fig.update_layout(
-                title={
-                    "text": "<b>Payment Mode Distribution</b>",
-                    "x": 0.02,
-                    "xanchor": "left",
-                    "font": {
-                        "size": 22,
-                        "color": "#111827",
-                        "family": "Inter"
-                    }
-                },
+                # title={
+                #     "text": "<b>Payment Mode Distribution</b>",
+                #     "x": 0.02,
+                #     "xanchor": "left",
+                #     "font": {
+                #         "size": 22,
+                #         "color": "#111827",
+                #         "family": "Inter"
+                #     }
+                # },
                 height=600,
-                margin=dict(t=70, b=20, l=20, r=20),
+                margin=dict(t=20, b=20, l=20, r=20),
                 legend=dict(
                     orientation="h",
                     yanchor="bottom",
@@ -3011,7 +3027,7 @@ def render_charts(filtered_df):
                 textfont_size=14,
                 hovertemplate="<b>%{label}</b><br>%{percent}<extra></extra>",
             )
-            st.plotly_chart(plot_style(fig), use_container_width=True)
+            # st.plotly_chart(plot_style(fig), use_container_width=True)
         else:
             st.info("Payment mode is required for payment distribution.")
 
@@ -3059,7 +3075,8 @@ def render_charts(filtered_df):
                 color_continuous_scale="Teal",
             )
             fig.update_layout(yaxis=dict(autorange="reversed"))
-            st.plotly_chart(plot_style(fig), use_container_width=True)
+            # st.plotly_chart(plot_style(fig), use_container_width=True)
+            st.write(fig)
         else:
             st.info("Hospital name and credit amount are required for top hospitals.")
 
