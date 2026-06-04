@@ -74,6 +74,135 @@ Ready for:
 * Data Warehouses
 
 ---
+## 🖥️ Offline Power BI Integration
+
+BIReady Tally is designed as an **offline-first analytics workflow**.
+
+The Streamlit application performs data cleaning, validation, anomaly detection, KPI generation, and dataset preparation. The prepared dataset is then consumed by a local Power BI dashboard template for advanced reporting and visualization.
+
+### Why Offline?
+
+Power BI Desktop (`.pbix`) files cannot be opened directly from a deployed Streamlit application because Power BI Desktop must be installed on the user's machine.
+
+For this reason:
+
+* ✅ Data cleaning and preparation can be performed through BIReady Tally.
+* ✅ Cleaned datasets are automatically exported in BI-ready format.
+* ✅ Power BI dashboards can be refreshed locally using the exported dataset.
+* ❌ Power BI Desktop cannot be launched from the deployed Streamlit Cloud application.
+* ❌ `.pbix` files cannot be executed inside a web browser.
+
+---
+
+## 📊 Power BI Dashboard Workflow
+
+The Power BI integration follows the workflow below:
+
+```text
+Raw Tally Export
+       │
+       ▼
+BIReady Tally
+(Data Cleaning & Validation)
+       │
+       ▼
+Cleaned CSV Dataset
+       │
+       ▼
+Power BI Desktop
+       │
+       ▼
+Interactive Business Dashboard
+```
+
+---
+
+## ⚙️ Power BI Setup Procedure
+
+### Step 1 — Process Data
+
+1. Launch BIReady Tally.
+2. Upload the Tally Export file.
+3. Review KPIs and data quality metrics.
+4. Export the cleaned dataset.
+
+Output:
+
+```text
+cleaned_tally_data.csv
+```
+
+---
+
+### Step 2 — Open Power BI Dashboard
+
+Open the provided dashboard template:
+
+```text
+powerbi/templates/Tally_Dashboard.pbix
+```
+
+Requirements:
+
+* Power BI Desktop installed
+* Microsoft Windows operating system
+
+---
+
+### Step 3 — Replace Dataset
+
+Copy the exported file:
+
+```text
+cleaned_tally_data.csv
+```
+
+into:
+
+```text
+powerbi/datasets/
+```
+
+or update the Power BI data source path to the exported CSV location.
+
+---
+
+### Step 4 — Refresh Dashboard
+
+Inside Power BI Desktop:
+
+```text
+Home → Refresh
+```
+
+Power BI will reload the latest cleaned dataset.
+
+---
+
+### Step 5 — Analyze Insights
+
+The dashboard automatically updates:
+
+* Revenue KPIs
+* Profitability Metrics
+* State-wise Analysis
+* Payment Mode Analysis
+* Customer/Hospital Performance
+* Business Trends
+
+---
+
+## ⚠️ Deployment Limitation
+
+When BIReady Tally is deployed on Streamlit Community Cloud:
+
+* Power BI Desktop integration is disabled.
+* The "Open Power BI Dashboard" feature is available only when running locally.
+* Exported CSV files can still be downloaded and imported into Power BI Desktop manually.
+
+This limitation exists because Power BI Desktop is a local Windows application and cannot be executed from cloud-hosted Streamlit environments.
+
+---
 
 ## 🛠️ Technology Stack
 
